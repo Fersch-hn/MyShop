@@ -76,6 +76,10 @@
     <Compile Include="Migrations\202001210327197_MySecondUpdate.designer.cs">
       <DependentUpon>202001210327197_MySecondUpdate.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202001211532516_MyThirdUpdate.cs" />
+    <Compile Include="Migrations\202001211532516_MyThirdUpdate.designer.cs">
+      <DependentUpon>202001211532516_MyThirdUpdate.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SQLRepository.cs" />
@@ -108,6 +112,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202001210327197_MySecondUpdate.resx">
       <DependentUpon>202001210327197_MySecondUpdate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202001211532516_MyThirdUpdate.resx">
+      <DependentUpon>202001211532516_MyThirdUpdate.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

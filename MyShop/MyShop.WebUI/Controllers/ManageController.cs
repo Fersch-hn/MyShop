@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
@@ -7,6 +8,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using MyShop.WebUI.Models;
+using MyShop.WebUI.ViewModels;
 
 namespace MyShop.WebUI.Controllers
 {
@@ -16,9 +18,28 @@ namespace MyShop.WebUI.Controllers
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
 
-        public ManageController()
+
+        public virtual ActionResult ListUser()
         {
+            var Users = UserManager.Users;
+            var roles = new List<string>();
+            foreach (var User in Users)
+            {
+                string str = "";
+                foreach (var role in UserManager.GetRoles(User.Id))
+                {
+                    str = (str == "") ? role.ToString() : str + " - " + role.ToString();
+                }
+                roles.Add(str);
+            }
+            var Model = new ListUserViewModel();
+
+            Model.Users = Users.ToList();
+            Model.roles = roles.ToList();
+            
+            return View(Model);
         }
+
 
         public ApplicationSignInManager SignInManager
         {

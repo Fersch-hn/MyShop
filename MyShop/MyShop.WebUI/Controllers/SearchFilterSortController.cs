@@ -6,20 +6,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Data.Entity;
+
 
 namespace MyShop.WebUI.Controllers
 {
-    public class HomeController : Controller
+    public class SearchFilterSortController : Controller
     {
         IRepository<Product> context;
         IRepository<ProductCategory> productCategories;
 
-        public HomeController(IRepository<Product> productContext, IRepository<ProductCategory> productCategoryContext)
+        public SearchFilterSortController(IRepository<Product> productContext, IRepository<ProductCategory> productCategoryContext)
         {
             context = productContext;
             productCategories = productCategoryContext;
         }
-
         public ActionResult Index(string Category = null)
         {
             List<Product> products;
@@ -39,39 +40,28 @@ namespace MyShop.WebUI.Controllers
             model.Products = products;
             model.ProductCategories = categories;
 
-            
+
             return View(model);
         }
 
-        public ActionResult Details(string Id)
+        public ActionResult Search(string search, string Category = null)
         {
-            Product product = context.Find(Id);
-            if (product == null)
-            {
-                return HttpNotFound();
-            }
-            else
-            {
-                return View(product);
-            }
-        }
-
-        public ActionResult About()
-        {
-            ViewBag.Message = "Your application description page.";
-
-            return View();
-        }
-
-        public ActionResult Contact()
-        {
-            ViewBag.Message = "Your contact page.";
-
-            return View();
-        }
-
-  
+            List<Product> products = context.Collection().ToList();
+            List<ProductCategory> categories = productCategories.Collection().ToList();
         
+
+            if (!String.IsNullOrEmpty(search))
+            {
+                products = products.Where(p => p.Name.Contains(search)).ToList();
+                categories = categories.Where(s => s.Category == Category).ToList();
+            }
+
+            ProductListViewModel model = new ProductListViewModel();
+
+            model.Products = products;
+            model.ProductCategories = categories;
+
+            return View(model);
+        }
     }
 }
-  

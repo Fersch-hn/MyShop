@@ -1,0 +1,25 @@
+﻿@model IEnumerable<MyShop.WebUI.ViewModels.ListUserViewModel>
+
+@{
+    ViewBag.Title = "ListUser";
+}
+
+<h2>ListUser</h2>
+
+@{
+    int i = 0;
+}
+
+@foreach (var item in Model)
+{
+    <tr>
+        <td>
+            @Html.DisplayFor(Item => item.Users)
+        </td>
+        
+       
+    </tr>
+    
+
+
+}

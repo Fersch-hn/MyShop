@@ -1,25 +1,48 @@
-﻿@model IEnumerable<MyShop.WebUI.ViewModels.ListUserViewModel>
+﻿@model MyShop.WebUI.ViewModels.ListUserViewModel
 
 @{
     ViewBag.Title = "ListUser";
 }
 
-<h2>ListUser</h2>
+<h2>List User</h2>
 
-@{
-    int i = 0;
-}
+<style>
+    table {
+        border-collapse: collapse;
+        width: 100%;
+    }
 
-@foreach (var item in Model)
+    th {
+        height: 50px;
+    }
+
+    tr:hover {
+        background-color: #f5f5f5;
+    }
+
+    table, th, td {
+        border: 1px solid black;
+    }
+</style>
+<table>
+    <tr>
+        <th>
+            UserName
+        </th>
+        <th>
+            Email
+        </th>
+    </tr>
+
+    @foreach (var item in Model.Users)
 {
     <tr>
         <td>
-            @Html.DisplayFor(Item => item.Users)
+            @Html.DisplayFor(Item => item.UserName)
         </td>
-        
-       
+        <td>
+            @Html.DisplayFor(Item => item.Email)
+        </td>
     </tr>
-    
-
-
 }
+</table> 

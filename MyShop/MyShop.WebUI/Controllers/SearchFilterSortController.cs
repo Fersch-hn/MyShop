@@ -52,7 +52,7 @@ namespace MyShop.WebUI.Controllers
 
             if (!String.IsNullOrEmpty(search))
             {
-                products = products.Where(p => p.Name.Contains(search)).ToList();
+                products = products.Where(p => p.Name.ToLower().Contains(search.ToLower())).ToList();
                 categories = categories.Where(s => s.Category == Category).ToList();
             }
 

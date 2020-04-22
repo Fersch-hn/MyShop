@@ -1,0 +1,28 @@
+﻿@model IEnumerable<System.Security.Claims.Claim>
+
+@{
+    ViewBag.Title = "ListUser";
+}
+<h2>Claims</h2>
+<p>
+    @Html.ActionLink("Add New", "AddRole")
+</p>
+
+<table class="table">
+    <tr>
+        <th>Subject</th>
+        <th>Issuer</th>
+        <th>Type</th>
+        <th>Value</th>
+    </tr>
+
+    @foreach (var claim in Model.OrderBy(x => x.Type))
+    {
+        <tr>
+            <td>@claim.Subject.Name</td>
+            <td>@claim.Issuer</td>
+            <td>@claim.Type</td>
+            <td>@claim.Value</td>
+        </tr>
+    }
+</table>

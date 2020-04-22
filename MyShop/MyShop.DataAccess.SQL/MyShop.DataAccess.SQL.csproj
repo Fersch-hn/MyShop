@@ -80,6 +80,18 @@
     <Compile Include="Migrations\202001211532516_MyThirdUpdate.designer.cs">
       <DependentUpon>202001211532516_MyThirdUpdate.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202003202320473_Search-update.cs" />
+    <Compile Include="Migrations\202003202320473_Search-update.designer.cs">
+      <DependentUpon>202003202320473_Search-update.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202003202328138_Database-updated.cs" />
+    <Compile Include="Migrations\202003202328138_Database-updated.designer.cs">
+      <DependentUpon>202003202328138_Database-updated.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202003202346331_Added-CategoryId.cs" />
+    <Compile Include="Migrations\202003202346331_Added-CategoryId.designer.cs">
+      <DependentUpon>202003202346331_Added-CategoryId.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SQLRepository.cs" />
@@ -115,6 +127,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202001211532516_MyThirdUpdate.resx">
       <DependentUpon>202001211532516_MyThirdUpdate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003202320473_Search-update.resx">
+      <DependentUpon>202003202320473_Search-update.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003202328138_Database-updated.resx">
+      <DependentUpon>202003202328138_Database-updated.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003202346331_Added-CategoryId.resx">
+      <DependentUpon>202003202346331_Added-CategoryId.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

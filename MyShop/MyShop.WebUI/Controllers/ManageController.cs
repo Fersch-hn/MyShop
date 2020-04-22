@@ -7,40 +7,68 @@ using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
+using MyShop.Core.Contracts;
+using MyShop.Core.Models;
 using MyShop.WebUI.Models;
-using MyShop.WebUI.ViewModels;
+using MyShop.Core.ViewModels;
+using System.Security.Claims;
+
 
 namespace MyShop.WebUI.Controllers
 {
-    [Authorize]
+    [Authorize(Roles ="Admin")]
     public class ManageController : Controller
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
 
+        IRepository<Customer> context;
 
-        public virtual ActionResult ListUser()
+        public ManageController(IRepository<Customer> customerContext)
         {
-            var Users = UserManager.Users;
-            var roles = new List<string>();
-            foreach (var User in Users)
-            {
-                string str = "";
-                foreach (var role in UserManager.GetRoles(User.Id))
-                {
-                    str = (str == "") ? role.ToString() : str + " - " + role.ToString();
-                }
-                roles.Add(str);
-            }
-            var Model = new ListUserViewModel();
+            context = customerContext;
+        }
 
-            Model.Users = Users.ToList();
-            Model.roles = roles.ToList();
+        public ActionResult ListUser()
+        {
+
+            List<Customer> customers = new List<Customer>();
+
+            customers = context.Collection().ToList();
+            
+            ListUserViewModel Model = new ListUserViewModel();
+            Model.Users = customers;
             
             return View(Model);
         }
 
+        public ActionResult AdminRoles()
+        {
+            var claims = ClaimsPrincipal.Current.Identities.First().Claims.ToList();             
+            return View(claims);
+        }
 
+        public ActionResult AddRole()
+        {
+
+
+            var claims = ClaimsPrincipal.Current;
+
+            ListUserViewModel Model = new ListUserViewModel();
+            Model.UserNames = claims;
+
+            return View(Model);
+        }
+
+        [HttpPost]
+        public ActionResult AddRole(string Users)
+        {
+            //var userId = customer.UserId;
+            //UserManager.AddClaim(userId, new Claim(ClaimTypes.Role, "Admin"));
+            return View();
+        }
+
+        
         public ApplicationSignInManager SignInManager
         {
             get

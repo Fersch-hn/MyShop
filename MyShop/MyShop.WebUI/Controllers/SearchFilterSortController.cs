@@ -21,7 +21,7 @@ namespace MyShop.WebUI.Controllers
             context = productContext;
             productCategories = productCategoryContext;
         }
-        public ActionResult Index(string Category = null)
+        public ActionResult Index(Guid? Category)
         {
             List<Product> products;
             List<ProductCategory> categories = productCategories.Collection().ToList();
@@ -44,22 +44,38 @@ namespace MyShop.WebUI.Controllers
             return View(model);
         }
 
-        public ActionResult Search(string search, string Category = null)
+        public ActionResult Search(string search, Guid? SelectedCategory)
         {
-            List<Product> products = context.Collection().ToList();
-            List<ProductCategory> categories = productCategories.Collection().ToList();
-        
+            IEnumerable<Product> products = context.Collection();
+            IEnumerable<ProductCategory> categories = productCategories.Collection();
+
 
             if (!String.IsNullOrEmpty(search))
             {
-                products = products.Where(p => p.Name.ToLower().Contains(search.ToLower())).ToList();
-                categories = categories.Where(s => s.Category == Category).ToList();
+                products = products.Where(p => p.Name.ToLower().Contains(search.ToLower()));
+
             }
 
-            ProductListViewModel model = new ProductListViewModel();
+            if (SelectedCategory.HasValue)
+            {
+                products = products.Where(p => p.Category == SelectedCategory.Value);
+            }
 
-            model.Products = products;
-            model.ProductCategories = categories;
+
+
+
+            var model = new ProductListViewModel
+            {
+                Products = products,
+                ProductCategories = categories,
+                Search = search,
+                SelectedCategory = SelectedCategory.HasValue ? SelectedCategory.Value : Guid.Empty
+            };
+        
+         
+            
+            model.SelectedCategory = SelectedCategory.HasValue ? SelectedCategory.Value : Guid.Empty;
+
 
             return View(model);
         }

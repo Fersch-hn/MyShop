@@ -205,7 +205,6 @@
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
-    <Compile Include="ViewModels\ListUserViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-theme.css" />
@@ -283,10 +282,13 @@
     <Content Include="Views\SearchFilterSort\Index.cshtml" />
     <Content Include="Views\SearchFilterSort\Search.cshtml" />
     <Content Include="Views\Manage\ListUser.cshtml" />
+    <Content Include="Views\Manage\AdminRoles.cshtml" />
+    <Content Include="Views\Manage\AddRole.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Content\ProductImages\" />
+    <Folder Include="ViewModels\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

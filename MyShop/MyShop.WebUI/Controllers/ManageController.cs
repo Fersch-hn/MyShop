@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
@@ -7,77 +6,40 @@ using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
-using MyShop.Core.Contracts;
-using MyShop.Core.Models;
+using MyShop.Services.Auth.Service;
 using MyShop.WebUI.Models;
-using MyShop.Core.ViewModels;
-using System.Security.Claims;
-
 
 namespace MyShop.WebUI.Controllers
 {
-    [Authorize(Roles ="Admin")]
+    [Authorize]
     public class ManageController : Controller
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
+        private ApplicationRoleManager _roleManager;
 
-        IRepository<Customer> context;
 
-        public ManageController(IRepository<Customer> customerContext)
+        public ManageController()
         {
-            context = customerContext;
         }
 
-        public ActionResult ListUser()
+        public ManageController(ApplicationUserManager userManager, ApplicationSignInManager signInManager, ApplicationRoleManager roleManager)
         {
+            UserManager = userManager;
+            SignInManager = signInManager;
+            RoleManager = roleManager;
 
-            List<Customer> customers = new List<Customer>();
-
-            customers = context.Collection().ToList();
-            
-            ListUserViewModel Model = new ListUserViewModel();
-            Model.Users = customers;
-            
-            return View(Model);
         }
 
-        public ActionResult AdminRoles()
-        {
-            var claims = ClaimsPrincipal.Current.Identities.First().Claims.ToList();             
-            return View(claims);
-        }
-
-        public ActionResult AddRole()
-        {
-
-
-            var claims = ClaimsPrincipal.Current;
-
-            ListUserViewModel Model = new ListUserViewModel();
-            Model.UserNames = claims;
-
-            return View(Model);
-        }
-
-        [HttpPost]
-        public ActionResult AddRole(string Users)
-        {
-            //var userId = customer.UserId;
-            //UserManager.AddClaim(userId, new Claim(ClaimTypes.Role, "Admin"));
-            return View();
-        }
-
-        
         public ApplicationSignInManager SignInManager
         {
             get
             {
                 return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
             }
-            private set 
-            { 
-                _signInManager = value; 
+            private set
+            {
+                _signInManager = value;
             }
         }
 
@@ -90,6 +52,18 @@ namespace MyShop.WebUI.Controllers
             private set
             {
                 _userManager = value;
+            }
+        }
+
+        public ApplicationRoleManager RoleManager
+        {
+            get
+            {
+                return _roleManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationRoleManager>();
+            }
+            private set
+            {
+                _roleManager = value;
             }
         }
 
@@ -376,7 +350,7 @@ namespace MyShop.WebUI.Controllers
             base.Dispose(disposing);
         }
 
-#region Helpers
+        #region Helpers
         // Used for XSRF protection when adding external logins
         private const string XsrfKey = "XsrfId";
 
@@ -427,6 +401,6 @@ namespace MyShop.WebUI.Controllers
             Error
         }
 
-#endregion
+        #endregion
     }
 }

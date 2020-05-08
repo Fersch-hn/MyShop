@@ -1,4 +1,4 @@
-﻿using Models.Auth;
+﻿using MyShop.Core.Models.Auth;
 using MyShop.Core;
 using MyShop.Core.Models;
 using System;
@@ -16,7 +16,7 @@ namespace MyShop.Services
         public IEnumerable<UserGrid> GetAll()
         {
             var result = new List<UserGrid>();
-            using (var ctx = new DataContext())
+            using (var ctx = new ApplicationDbContext())
             {
                 result = (
                     from au in ctx.ApplicationUsers
@@ -25,7 +25,7 @@ namespace MyShop.Services
                     select new UserGrid
                     {
                         Id = au.Id,
-                        Name = au.FirstName,
+                        Name = au.Name,
                         LastName = au.LastName,
                         Email = au.Email,
                         Role = ar.Name
@@ -40,7 +40,7 @@ namespace MyShop.Services
         public ApplicationUser Get(string id)
         {
             var result = new ApplicationUser();
-            using (var ctx = new DataContext())
+            using (var ctx = new ApplicationDbContext())
             {
                 result = ctx.ApplicationUsers.Where(x => x.Id == id).Single();
             }

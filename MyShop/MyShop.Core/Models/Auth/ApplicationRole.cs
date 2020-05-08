@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNet.Identity.EntityFramework;
 
-namespace Models.Auth
+namespace MyShop.Core.Models.Auth
 {
     public class ApplicationRole : IdentityRole
     {

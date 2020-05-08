@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-namespace Models.Auth
+namespace MyShop.Core.Models.Auth
 {
     public class ApplicationUser : IdentityUser
     {
@@ -42,7 +42,7 @@ namespace Models.Auth
             return await Task.FromResult(identity);
         }
 
-        public string FirstName { get; set; }
+        public string Name { get; set; }
         public string LastName { get; set; }
     }
 }

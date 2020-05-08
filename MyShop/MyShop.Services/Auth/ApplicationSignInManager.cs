@@ -2,7 +2,7 @@
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using Microsoft.Owin.Security;
-using Models.Auth;
+using MyShop.Core.Models.Auth;
 using System;
 using System.Collections.Generic;
 using System.Linq;

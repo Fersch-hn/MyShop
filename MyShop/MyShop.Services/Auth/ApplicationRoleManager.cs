@@ -2,7 +2,7 @@
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
-using Models.Auth;
+using MyShop.Core.Models.Auth;
 using MyShop.Core;
 using MyShop.DataAccess.SQL;
 
@@ -19,7 +19,7 @@ namespace MyShop.Services.Auth.Service
             IOwinContext context)
         {
             var manager = new ApplicationRoleManager(
-                new RoleStore<ApplicationRole>(context.Get<DataContext>()));
+                new RoleStore<ApplicationRole>(context.Get<ApplicationDbContext>()));
             return manager;
         }
     }

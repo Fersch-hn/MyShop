@@ -2,92 +2,287 @@
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
-using Models.Auth;
+using MyShop.Core.Models.Auth;
 using MyShop.DataAccess.SQL;
+using NLog;
 using System;
 using System.Threading.Tasks;
+using System.Collections.Generic;
+using System.Linq;
+using System.Data.Entity;
 
 namespace MyShop.Services.Auth.Service
 {
 
-    public class ApplicationUserManager : UserManager<ApplicationUser>
-    {
-        public ApplicationUserManager(IUserStore<ApplicationUser> store)
-            : base(store)
+    //public class ApplicationUserManager : UserManager<ApplicationUser>
+    //{
+        //    public ApplicationUserManager(IUserStore<ApplicationUser> store)
+        //        : base(store)
+        //    {
+        //    }
+
+        //    public static ApplicationUserManager Create(IdentityFactoryOptions<ApplicationUserManager> options, IOwinContext context)
+        //    {
+        //        var manager = new ApplicationUserManager(new UserStore<ApplicationUser>(context.Get<ApplicationDbContext>()));
+        //        // Configure validation logic for usernames
+        //        manager.UserValidator = new UserValidator<ApplicationUser>(manager)
+        //        {
+        //            AllowOnlyAlphanumericUserNames = false,
+        //            RequireUniqueEmail = true
+        //        };
+
+        //        // Configure validation logic for passwords
+        //        manager.PasswordValidator = new PasswordValidator
+        //        {
+        //            RequiredLength = 6,
+        //            RequireNonLetterOrDigit = true,
+        //            RequireDigit = true,
+        //            RequireLowercase = true,
+        //            RequireUppercase = true,
+        //        };
+
+        //        // Configure user lockout defaults
+        //        manager.UserLockoutEnabledByDefault = true;
+        //        manager.DefaultAccountLockoutTimeSpan = TimeSpan.FromMinutes(5);
+        //        manager.MaxFailedAccessAttemptsBeforeLockout = 5;
+
+        //        // Register two factor authentication providers. This application uses Phone and Emails as a step of receiving a code for verifying the user
+        //        // You can write your own provider and plug it in here.
+        //        manager.RegisterTwoFactorProvider("Phone Code", new PhoneNumberTokenProvider<ApplicationUser>
+        //        {
+        //            MessageFormat = "Your security code is {0}"
+        //        });
+        //        manager.RegisterTwoFactorProvider("Email Code", new EmailTokenProvider<ApplicationUser>
+        //        {
+        //            Subject = "Security Code",
+        //            BodyFormat = "Your security code is {0}"
+        //        });
+        //        //manager.EmailService = new EmailService();
+        //        //manager.SmsService = new SmsService();
+        //        var dataProtectionProvider = options.DataProtectionProvider;
+        //        if (dataProtectionProvider != null)
+        //        {
+        //            manager.UserTokenProvider =
+        //                new DataProtectorTokenProvider<ApplicationUser>(dataProtectionProvider.Create("ASP.NET Identity"));
+        //        }
+        //        return manager;
+        //    }
+
+        //    public async override Task<IdentityResult> AddToRoleAsync(string userId, string roleId)
+        //    {
+        //        try
+        //        {
+        //            using (var ctx = new ApplicationDbContext())
+        //            {
+
+        //                ctx.ApplicationUserRoles.Add(new ApplicationUserRole
+        //                {
+        //                    UserId = userId,
+        //                    RoleId = roleId
+        //                });
+
+
+        //                ctx.SaveChanges();
+        //            }
+
+        //            return await Task.FromResult(new IdentityResult() { });
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            return await Task.FromResult(new IdentityResult(ex.Message));
+        //        }
+        //    }
+        //}
+
+        // Configure the application user manager used in this application. UserManager is defined in ASP.NET Identity and is used by the application.
+        public class ApplicationUserManager : UserManager<ApplicationUser>
         {
-        }
+            private static ILogger logger = LogManager.GetCurrentClassLogger();
 
-        public static ApplicationUserManager Create(IdentityFactoryOptions<ApplicationUserManager> options, IOwinContext context)
-        {
-            var manager = new ApplicationUserManager(new UserStore<ApplicationUser>(context.Get<DataContext>()));
-            // Configure validation logic for usernames
-            manager.UserValidator = new UserValidator<ApplicationUser>(manager)
+            public ApplicationUserManager(IUserStore<ApplicationUser> store)
+                : base(store)
             {
-                AllowOnlyAlphanumericUserNames = false,
-                RequireUniqueEmail = true
-            };
-
-            // Configure validation logic for passwords
-            manager.PasswordValidator = new PasswordValidator
-            {
-                RequiredLength = 6,
-                RequireNonLetterOrDigit = true,
-                RequireDigit = true,
-                RequireLowercase = true,
-                RequireUppercase = true,
-            };
-
-            // Configure user lockout defaults
-            manager.UserLockoutEnabledByDefault = true;
-            manager.DefaultAccountLockoutTimeSpan = TimeSpan.FromMinutes(5);
-            manager.MaxFailedAccessAttemptsBeforeLockout = 5;
-
-            // Register two factor authentication providers. This application uses Phone and Emails as a step of receiving a code for verifying the user
-            // You can write your own provider and plug it in here.
-            manager.RegisterTwoFactorProvider("Phone Code", new PhoneNumberTokenProvider<ApplicationUser>
-            {
-                MessageFormat = "Your security code is {0}"
-            });
-            manager.RegisterTwoFactorProvider("Email Code", new EmailTokenProvider<ApplicationUser>
-            {
-                Subject = "Security Code",
-                BodyFormat = "Your security code is {0}"
-            });
-            //manager.EmailService = new EmailService();
-            //manager.SmsService = new SmsService();
-            var dataProtectionProvider = options.DataProtectionProvider;
-            if (dataProtectionProvider != null)
-            {
-                manager.UserTokenProvider =
-                    new DataProtectorTokenProvider<ApplicationUser>(dataProtectionProvider.Create("ASP.NET Identity"));
             }
-            return manager;
-        }
 
-        public async override Task<IdentityResult> AddToRoleAsync(string userId, string roleId)
-        {
-            try
+            public static ApplicationUserManager Create(IdentityFactoryOptions<ApplicationUserManager> options, IOwinContext context)
             {
-                using (var ctx = new DataContext())
+                var manager = new ApplicationUserManager(new UserStore<ApplicationUser>(context.Get<ApplicationDbContext>()));
+                // Configure validation logic for usernames
+                manager.UserValidator = new UserValidator<ApplicationUser>(manager)
                 {
+                    AllowOnlyAlphanumericUserNames = false,
+                    RequireUniqueEmail = true
+                };
 
-                    ctx.ApplicationUserRoles.Add(new ApplicationUserRole
+                // Configure validation logic for passwords
+                manager.PasswordValidator = new PasswordValidator
+                {
+                    RequiredLength = 6,
+                    RequireNonLetterOrDigit = true,
+                    RequireDigit = true,
+                    RequireLowercase = true,
+                    RequireUppercase = true,
+                };
+
+                // Configure user lockout defaults
+                manager.UserLockoutEnabledByDefault = true;
+                manager.DefaultAccountLockoutTimeSpan = TimeSpan.FromMinutes(5);
+                manager.MaxFailedAccessAttemptsBeforeLockout = 5;
+
+                // Register two factor authentication providers. This application uses Phone and Emails as a step of receiving a code for verifying the user
+                // You can write your own provider and plug it in here.
+                manager.RegisterTwoFactorProvider("Phone Code", new PhoneNumberTokenProvider<ApplicationUser>
+                {
+                    MessageFormat = "Your security code is {0}"
+                });
+
+                manager.RegisterTwoFactorProvider("Email Code", new EmailTokenProvider<ApplicationUser>
+                {
+                    Subject = "Security Code",
+                    BodyFormat = "Your security code is {0}"
+                });
+                //manager.EmailService = new EmailService();
+                //manager.SmsService = new SmsService();
+                var dataProtectionProvider = options.DataProtectionProvider;
+                if (dataProtectionProvider != null)
+                {
+                    manager.UserTokenProvider =
+                        new DataProtectorTokenProvider<ApplicationUser>(dataProtectionProvider.Create("ASP.NET Identity"));
+                }
+                return manager;
+            }
+
+            public async override Task<IdentityResult> AddToRoleAsync(string userId, string roleId)
+            {
+                try
+                {
+                    using (var ctx = new ApplicationDbContext())
                     {
-                        UserId = userId,
-                        RoleId = roleId
-                    });
+                        ctx.ApplicationUserRoles.Add(new ApplicationUserRole
+                        {
+                            UserId = userId,
+                            RoleId = roleId
+                        });
 
+                        ctx.SaveChanges();
+                    }
 
-                    ctx.SaveChanges();
+                    return await Task.FromResult(IdentityResult.Success);
+                }
+                catch (Exception ex)
+                {
+                    logger.Error(ex.Message);
+                    return await Task.FromResult(new IdentityResult(ex.Message));
+                }
+            }
+
+            public async override Task<IdentityResult> AddToRolesAsync(string userId, params string[] roles)
+            {
+                try
+                {
+                    using (var ctx = new ApplicationDbContext())
+                    {
+                        foreach (var roleId in roles)
+                        {
+                            ctx.ApplicationUserRoles.Add(new ApplicationUserRole
+                            {
+                                UserId = userId,
+                                RoleId = roleId
+                            });
+                        }
+
+                        ctx.SaveChanges();
+                    }
+
+                    return await Task.FromResult(IdentityResult.Success);
+                }
+                catch (Exception ex)
+                {
+                    logger.Error(ex.Message);
+                    return await Task.FromResult(new IdentityResult(ex.Message));
+                }
+            }
+
+            public async new Task<IEnumerable<ApplicationRole>> GetRolesAsync(string userId)
+            {
+                IEnumerable<ApplicationRole> result = new List<ApplicationRole>();
+
+                try
+                {
+                    using (var ctx = new ApplicationDbContext())
+                    {
+                        var roles = ctx.ApplicationUserRoles.Where(x => x.UserId == userId).Select(x => x.RoleId).ToList();
+                        result = ctx.ApplicationRoles.Where(x => roles.Contains(x.Id)).OrderBy(x => x.Name).ToList();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    logger.Error(ex.Message);
                 }
 
-                return await Task.FromResult(new IdentityResult() { });
+                return await Task.FromResult(result);
             }
-            catch (Exception ex)
+
+            public async override Task<bool> IsInRoleAsync(string userId, string roleId)
             {
-                return await Task.FromResult(new IdentityResult(ex.Message));
+                var result = false;
+
+                try
+                {
+                    using (var ctx = new ApplicationDbContext())
+                    {
+                        result = ctx.ApplicationUserRoles.Any(x => x.UserId == userId && x.RoleId == roleId);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    logger.Error(ex.Message);
+                }
+
+                return await Task.FromResult(result);
+            }
+
+            public async override Task<IdentityResult> RemoveFromRoleAsync(string userId, string roleId)
+            {
+                try
+                {
+                    using (var ctx = new ApplicationDbContext())
+                    {
+                        var roles = ctx.ApplicationUserRoles.Where(x => x.RoleId == roleId && x.UserId == userId).ToList();
+                        ctx.Entry(roles).State = EntityState.Deleted;
+
+                        ctx.SaveChanges();
+                    }
+
+                    return await Task.FromResult(IdentityResult.Success);
+                }
+                catch (Exception ex)
+                {
+                    logger.Error(ex.Message);
+                    return await Task.FromResult(new IdentityResult(ex.Message));
+                }
+            }
+
+            public async override Task<IdentityResult> RemoveFromRolesAsync(string userId, params string[] roles)
+            {
+                try
+                {
+                    using (var ctx = new ApplicationDbContext())
+                    {
+                        var rolesPerUser = ctx.ApplicationUserRoles.Where(x => roles.Contains(x.RoleId) && x.UserId == userId).ToList();
+                        ctx.Entry(rolesPerUser).State = EntityState.Deleted;
+
+                        ctx.SaveChanges();
+                    }
+
+                    return await Task.FromResult(IdentityResult.Success);
+                }
+                catch (Exception ex)
+                {
+                    logger.Error(ex.Message);
+                    return await Task.FromResult(new IdentityResult(ex.Message));
+                }
             }
         }
     }
-}
 

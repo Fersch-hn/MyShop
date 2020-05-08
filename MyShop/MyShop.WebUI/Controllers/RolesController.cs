@@ -1,8 +1,7 @@
 ﻿using Microsoft.AspNet.Identity.Owin;
-using Models.Auth;
+using MyShop.Core.Models.Auth;
 using MyShop.Services.Auth.Service;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;

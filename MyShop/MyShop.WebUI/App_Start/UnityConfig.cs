@@ -3,9 +3,11 @@ using MyShop.Core.Models;
 using MyShop.DataAccess.InMemory;
 using MyShop.DataAccess.SQL;
 using MyShop.Services;
+using MyShop.WebUI.Controllers;
 using System;
 
 using Unity;
+using Unity.Injection;
 
 namespace MyShop.WebUI
 {
@@ -57,6 +59,9 @@ namespace MyShop.WebUI
 
             container.RegisterType<IBasketService, BasketService>();
             container.RegisterType<IOrderService, OrderService>();
+            container.RegisterType<AccountController>(new InjectionConstructor());
+            container.RegisterType<ManageController>(new InjectionConstructor());
+
         }
     }
 }

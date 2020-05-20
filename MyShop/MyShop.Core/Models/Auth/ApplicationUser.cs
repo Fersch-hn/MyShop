@@ -42,7 +42,7 @@ namespace MyShop.Core.Models.Auth
             return await Task.FromResult(identity);
         }
 
-        public string Name { get; set; }
+        public string FirstName { get; set; }
         public string LastName { get; set; }
     }
 }

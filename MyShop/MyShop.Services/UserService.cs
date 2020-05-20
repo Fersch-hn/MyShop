@@ -25,7 +25,7 @@ namespace MyShop.Services
                     select new UserGrid
                     {
                         Id = au.Id,
-                        Name = au.Name,
+                        Name = au.FirstName,
                         LastName = au.LastName,
                         Email = au.Email,
                         Role = ar.Name

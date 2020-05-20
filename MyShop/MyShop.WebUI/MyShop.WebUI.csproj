@@ -248,7 +248,6 @@
     <Compile Include="Controllers\OrderManagerController.cs" />
     <Compile Include="Controllers\ProductCategoryManagerController.cs" />
     <Compile Include="Controllers\ProductManagerController.cs" />
-    <Compile Include="Controllers\RoleController.cs" />
     <Compile Include="Controllers\RolesController.cs" />
     <Compile Include="Controllers\SearchFilterSortController.cs" />
     <Compile Include="Controllers\UserController.cs" />

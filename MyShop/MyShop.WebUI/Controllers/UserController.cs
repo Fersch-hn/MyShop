@@ -8,7 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
-
+using MyShop.Core.Common;
 
 namespace MyShop.WebUI.Controllers
 {
@@ -33,7 +33,7 @@ namespace MyShop.WebUI.Controllers
             }
         }
 
-        private readonly UserService _userService = new UserService();
+        private readonly IUserService _userService = DependecyFactory.GetInstance<IUserService>();
 
         // GET: User
         public ActionResult Index()

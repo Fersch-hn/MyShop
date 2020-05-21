@@ -58,12 +58,28 @@
   <ItemGroup>
     <Compile Include="ApplicationDbContext.cs" />
     <Compile Include="DataContext.cs" />
+    <Compile Include="DbContextScope\Enums\DbContextScopeOptions.cs" />
+    <Compile Include="DbContextScope\Extensions\GetDbSet.cs" />
+    <Compile Include="DbContextScope\Implementations\AmbientContextSupressor.cs" />
+    <Compile Include="DbContextScope\Implementations\AmbientDbContextLocator.cs" />
+    <Compile Include="DbContextScope\Implementations\DbContextCollection.cs" />
+    <Compile Include="DbContextScope\Implementations\DbContextReadOnlyScope.cs" />
+    <Compile Include="DbContextScope\Implementations\DbContextScope.cs" />
+    <Compile Include="DbContextScope\Implementations\DbContextScopeFactory.cs" />
+    <Compile Include="DbContextScope\Interfaces\IAmbientDbContextLocator.cs" />
+    <Compile Include="DbContextScope\Interfaces\IDbContexFactory.cs" />
+    <Compile Include="DbContextScope\Interfaces\IDbContextCollection.cs" />
+    <Compile Include="DbContextScope\Interfaces\IDbContextReadOnlyScope.cs" />
+    <Compile Include="DbContextScope\Interfaces\IDbContextScope.cs" />
+    <Compile Include="DbContextScope\Interfaces\IDbContextScopeFactory.cs" />
     <Compile Include="Migrations\202005110158439_Initialize.cs" />
     <Compile Include="Migrations\202005110158439_Initialize.Designer.cs">
       <DependentUpon>202005110158439_Initialize.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repository\IRepository.cs" />
+    <Compile Include="Repository\Repository.cs" />
     <Compile Include="SQLRepository.cs" />
   </ItemGroup>
   <ItemGroup>
